@@ -10,15 +10,21 @@ class GamePlayController extends GetxController
   List<ObjectModel> objects = <ObjectModel>[];
   RxInt rocksWin = 0.obs;
   RxInt papersWin = 0.obs;
-  RxInt scissorWin = 0.obs;
+  RxInt scissorsWin = 0.obs;
+  late Size screenSize = Size(Get.context!.size!.width - 60,
+      Get.context!.size!.height - Get.statusBarHeight);
 
-  final Size screenSize = Size(Get.width - 60, Get.height - 60);
+  // set setScreenSize(Size size) {
+  //   screenSize = size;
+  //   update();
+  // }
 
   late Ticker ticker;
 
   @override
   void onInit() {
     super.onInit();
+
     ticker = createTicker(onTick)..start();
   }
 
@@ -67,7 +73,7 @@ class GamePlayController extends GetxController
                 papersWin++;
                 break;
               case ObjectType.scissor:
-                scissorWin++;
+                scissorsWin++;
                 break;
               case ObjectType.rock:
                 rocksWin++;
