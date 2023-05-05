@@ -14,11 +14,6 @@ class GamePlayController extends GetxController
   late Size screenSize = Size(Get.context!.size!.width - 60,
       Get.context!.size!.height - Get.statusBarHeight);
 
-  // set setScreenSize(Size size) {
-  //   screenSize = size;
-  //   update();
-  // }
-
   late Ticker ticker;
 
   @override
