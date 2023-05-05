@@ -8,18 +8,27 @@ import 'object_model.dart';
 class GamePlayController extends GetxController
     with GetTickerProviderStateMixin {
   List<ObjectModel> objects = <ObjectModel>[];
+
+  int rocksCount = 5;
+  int papersCount = 5;
+  int scissorCount = 5;
   RxInt rocksWin = 0.obs;
   RxInt papersWin = 0.obs;
   RxInt scissorsWin = 0.obs;
-  late Size screenSize = Size(Get.context!.size!.width - 60,
-      Get.context!.size!.height - Get.statusBarHeight);
+  late Size screenSize;
+  Color rockTextColor = Colors.black;
 
+  Color paperTextColor = Colors.black;
+  Color scissorTextColor = Colors.black;
+
+  GamePlayController(double w, double h) {
+    screenSize = Size(w, h);
+  }
   late Ticker ticker;
 
   @override
   void onInit() {
     super.onInit();
-
     ticker = createTicker(onTick)..start();
   }
 
@@ -29,9 +38,29 @@ class GamePlayController extends GetxController
     createObjects();
   }
 
+  @override
+  void onClose() {
+    ticker.dispose();
+    super.onClose();
+  }
+
+  Future<void> checkWinner() async {
+    if (papersCount == 0 && scissorCount == 0) {
+      rockTextColor = Colors.red;
+      update(['rock']);
+    } else if (rocksCount == 0 && scissorCount == 0) {
+      paperTextColor = Colors.green;
+      update(['paper']);
+    } else if (papersCount == 0 && rocksCount == 0) {
+      scissorTextColor = Colors.blue;
+      update(['scissor']);
+    }
+  }
+
   void onTick(Duration duration) {
     updateObjectsPosition();
     detectCollisions();
+    checkWinner();
   }
 
   void updateObjectsPosition() {
@@ -76,6 +105,21 @@ class GamePlayController extends GetxController
               default:
             }
             final loserIndex = objects.indexOf(winner == obj1 ? obj2 : obj1);
+            switch (objects.elementAt(loserIndex).type) {
+              case ObjectType.rock:
+                rocksCount--;
+                break;
+              case ObjectType.paper:
+                papersCount--;
+
+                break;
+              case ObjectType.scissor:
+                scissorCount--;
+
+                break;
+              default:
+            }
+
             objects.removeAt(loserIndex);
 
             winner.dx *= -1;
@@ -84,6 +128,7 @@ class GamePlayController extends GetxController
         }
       }
     }
+
     update();
   }
 
@@ -98,7 +143,7 @@ class GamePlayController extends GetxController
   }
 
   void createObjects() {
-    final List<ObjectModel> rocks = List.generate(5, (index) {
+    final List<ObjectModel> rocks = List.generate(rocksCount, (index) {
       final rand = Random().nextDouble();
       final rand2 = Random().nextDouble();
 
@@ -112,7 +157,7 @@ class GamePlayController extends GetxController
           dy: (rand2 - 0.5) * 10);
     });
 
-    List<ObjectModel> papers = List.generate(5, (index) {
+    final List<ObjectModel> papers = List.generate(papersCount, (index) {
       final rand = Random().nextDouble();
       final rand2 = Random().nextDouble();
 
@@ -125,7 +170,7 @@ class GamePlayController extends GetxController
           dx: (rand - 0.5) * 10,
           dy: (rand2 - 0.5) * 10);
     });
-    final List<ObjectModel> scissors = List.generate(5, (index) {
+    final List<ObjectModel> scissors = List.generate(scissorCount, (index) {
       final rand = Random().nextDouble();
       final rand2 = Random().nextDouble();
 
