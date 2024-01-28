@@ -8,7 +8,7 @@ import 'object_model.dart';
 class GamePlayController extends GetxController
     with GetTickerProviderStateMixin {
   List<ObjectModel> objects = <ObjectModel>[];
-
+  int speed = 10;
   int rocksCount = 5;
   int papersCount = 5;
   int scissorCount = 5;
@@ -24,6 +24,7 @@ class GamePlayController extends GetxController
   GamePlayController(double w, double h) {
     screenSize = Size(w, h);
   }
+
   late Ticker ticker;
 
   @override
@@ -92,6 +93,7 @@ class GamePlayController extends GetxController
             obj2.dy = tempDy;
           } else {
             final winner = getWinner(obj1, obj2);
+            var rand = Random().nextDouble();
             switch (winner.type) {
               case ObjectType.paper:
                 papersWin++;
@@ -111,24 +113,19 @@ class GamePlayController extends GetxController
                 break;
               case ObjectType.paper:
                 papersCount--;
-
                 break;
               case ObjectType.scissor:
                 scissorCount--;
-
                 break;
               default:
             }
-
             objects.removeAt(loserIndex);
-
             winner.dx *= -1;
             winner.dy *= -1;
           }
         }
       }
     }
-
     update();
   }
 
@@ -153,8 +150,8 @@ class GamePlayController extends GetxController
           color: Colors.red,
           x: rand * screenSize.width,
           y: rand2 * screenSize.height,
-          dx: (rand - 0.5) * 10,
-          dy: (rand2 - 0.5) * 10);
+          dx: (rand - 0.5) * speed,
+          dy: (rand2 - 0.5) * speed);
     });
 
     final List<ObjectModel> papers = List.generate(papersCount, (index) {
@@ -167,8 +164,8 @@ class GamePlayController extends GetxController
           color: Colors.green,
           x: rand * screenSize.width,
           y: rand2 * screenSize.height,
-          dx: (rand - 0.5) * 10,
-          dy: (rand2 - 0.5) * 10);
+          dx: (rand - 0.5) * speed,
+          dy: (rand2 - 0.5) * speed);
     });
     final List<ObjectModel> scissors = List.generate(scissorCount, (index) {
       final rand = Random().nextDouble();
@@ -180,8 +177,8 @@ class GamePlayController extends GetxController
           color: Colors.blue,
           x: rand * screenSize.width,
           y: rand2 * screenSize.height,
-          dx: (rand - 0.5) * 10,
-          dy: (rand2 - 0.5) * 10);
+          dx: (rand - 0.5) * speed,
+          dy: (rand2 - 0.5) * speed);
     });
     objects = [
       ...rocks,

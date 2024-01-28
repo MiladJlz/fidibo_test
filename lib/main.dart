@@ -1,7 +1,8 @@
-import 'package:fidibo_test/gameplay_controller.dart';
+import 'package:fidibo_test/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 void main() {
   runApp(const GameScreen());
@@ -14,7 +15,7 @@ class GameScreen extends GetView<GamePlayController> {
     return ScreenUtilInit(
         builder: (context, child) => GetMaterialApp(
               debugShowCheckedModeBanner: false,
-              home: Scaffold(
+              home:SafeArea(child: Scaffold(
                 body: GetBuilder<GamePlayController>(
                     init: GamePlayController(
                         ScreenUtil().screenWidth - 60,
@@ -27,46 +28,46 @@ class GameScreen extends GetView<GamePlayController> {
                           children: [
                             Center(
                                 child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                GetBuilder<GamePlayController>(
-                                    init: controller,
-                                    tag: "rock",
-                                    builder: (controller) {
-                                      return Text(
-                                        "Rock!",
-                                        style: TextStyle(
-                                            fontSize: 50,
-                                            fontStyle: FontStyle.italic,
-                                            color: controller.rockTextColor),
-                                      );
-                                    }),
-                                GetBuilder<GamePlayController>(
-                                    init: controller,
-                                    tag: "paper",
-                                    builder: (controller) {
-                                      return Text(
-                                        "Paper!",
-                                        style: TextStyle(
-                                            fontSize: 50,
-                                            fontStyle: FontStyle.italic,
-                                            color: controller.paperTextColor),
-                                      );
-                                    }),
-                                GetBuilder<GamePlayController>(
-                                    init: controller,
-                                    tag: "scissor",
-                                    builder: (controller) {
-                                      return Text(
-                                        "scissor!",
-                                        style: TextStyle(
-                                            fontSize: 50,
-                                            fontStyle: FontStyle.italic,
-                                            color: controller.scissorTextColor),
-                                      );
-                                    })
-                              ],
-                            )),
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    GetBuilder<GamePlayController>(
+                                        init: controller,
+                                        tag: "rock",
+                                        builder: (controller) {
+                                          return Text(
+                                            "Rock!",
+                                            style: TextStyle(
+                                                fontSize: 50,
+                                                fontStyle: FontStyle.italic,
+                                                color: controller.rockTextColor),
+                                          );
+                                        }),
+                                    GetBuilder<GamePlayController>(
+                                        init: controller,
+                                        tag: "paper",
+                                        builder: (controller) {
+                                          return Text(
+                                            "Paper!",
+                                            style: TextStyle(
+                                                fontSize: 50,
+                                                fontStyle: FontStyle.italic,
+                                                color: controller.paperTextColor),
+                                          );
+                                        }),
+                                    GetBuilder<GamePlayController>(
+                                        init: controller,
+                                        tag: "scissor",
+                                        builder: (controller) {
+                                          return Text(
+                                            "scissor!",
+                                            style: TextStyle(
+                                                fontSize: 50,
+                                                fontStyle: FontStyle.italic,
+                                                color: controller.scissorTextColor),
+                                          );
+                                        })
+                                  ],
+                                )),
                             Stack(
                               children: [
                                 for (final obj in controller.objects)
@@ -94,7 +95,7 @@ class GameScreen extends GetView<GamePlayController> {
                                 left: 5,
                                 child: Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
@@ -123,7 +124,7 @@ class GameScreen extends GetView<GamePlayController> {
                         ),
                       );
                     }),
-              ),
+              )),
             ));
   }
 }
